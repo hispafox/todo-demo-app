@@ -1,7 +1,7 @@
 ---
 name: commit-message
-description: "Genera mensajes de commit claros, específicos y útiles para este repositorio. Úsalo cuando vayas a commitear cambios, revisar qué se modificó o redactar un resumen corto con cuerpo opcional: la primera línea describe el cambio y el cuerpo explica el detalle si hace falta."
-argument-hint: "Escribe un mensaje de commit para estos cambios: ..."
+description: "Genera mensajes de commit claros y específicos para este repositorio. Úsalo cuando vayas a crear un commit, revisar un mensaje de commit, redactar el resumen de un cambio o validar antes de confirmar. La primera línea debe seguir el formato <tipo>(<ámbito>): <resumen concreto> y el cuerpo solo añade detalle si aporta contexto útil."
+argument-hint: "Describe los cambios que has hecho y genera un mensaje de commit con formato <tipo>(<ámbito>): <resumen concreto>."
 user-invocable: true
 disable-model-invocation: false
 ---
