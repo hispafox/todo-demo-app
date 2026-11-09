@@ -1,3 +1,9 @@
+/*
+ * Autor: Hispafox
+ * Fecha: 2026-11-09
+ * Versión: 1.0.0
+ * Descripción: Contexto EF Core para la base de datos de tareas.
+ */
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 

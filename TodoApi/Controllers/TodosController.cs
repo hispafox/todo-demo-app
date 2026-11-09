@@ -1,3 +1,9 @@
+/*
+ * Autor: Hispafox
+ * Fecha: 2026-11-09
+ * Versión: 1.0.0
+ * Descripción: Controlador de API para gestionar tareas del proyecto.
+ */
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Data;

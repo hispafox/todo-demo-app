@@ -1,3 +1,9 @@
+/*
+ * Autor: Hispafox
+ * Fecha: 2026-11-09
+ * Versión: 1.0.0
+ * Descripción: Modelo de ejemplo para previsiones meteorológicas del proyecto.
+ */
 namespace TodoApi;
 
 public class WeatherForecast

@@ -1,3 +1,9 @@
+/*
+ * Autor: Hispafox
+ * Fecha: 2026-11-09
+ * Versión: 1.0.0
+ * Descripción: DTO de entrada para actualizar una tarea existente.
+ */
 using System.ComponentModel.DataAnnotations;
 
 namespace TodoApi.DTOs;

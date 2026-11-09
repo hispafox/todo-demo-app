@@ -1,3 +1,9 @@
+/**
+ * Autor: Hispafox
+ * Fecha: 2026-11-09
+ * Versión: 1.0.0
+ * Descripción: Componente principal de la lista de tareas del frontend.
+ */
 import { useEffect, useState } from 'react'
 import './App.css'
 
