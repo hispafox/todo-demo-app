@@ -1,136 +1,119 @@
 ---
 name: commit-message
-description: "Genera mensajes de commit claros y específicos para este repositorio. Úsalo cuando vayas a crear un commit, revisar un mensaje de commit, redactar el resumen de un cambio o validar antes de confirmar. La primera línea debe seguir el formato <tipo>(<ámbito>): <resumen concreto> y el cuerpo solo añade detalle si aporta contexto útil."
-argument-hint: "Describe los cambios que has hecho y genera un mensaje de commit con formato <tipo>(<ámbito>): <resumen concreto>."
-user-invocable: true
-disable-model-invocation: false
+description: 'Genera mensajes de commit siguiendo convenciones del proyecto. Úsalo cuando vayas a hacer un commit, quieras redactar el mensaje de commit, necesites describir un cambio para git, o preguntes cómo formular un commit.'
+argument-hint: 'Describe brevemente el cambio que vas a commitear'
 ---
 
-# Mensajes de commit para este proyecto
+# Generador de Mensajes de Commit
 
-## Cuándo usar este skill
+## Formato
 
-- Cuando se vaya a crear un commit.
-- Cuando quieras comprobar si el mensaje describe exactamente lo que cambió.
-- Cuando necesites redactar una primera línea breve y un cuerpo opcional con detalle.
+```
+<tipo>[ámbito opcional]: <resumen corto en imperativo>
 
-## Regla principal
+[cuerpo opcional — explica el porqué si el cambio no es obvio]
 
-No escribas mensajes vagos como:
-
-- actualizar fichero
-- arreglar cosas
-- mejoras varias
-- cambiar instrucciones
-
-Eso no dice qué cambió realmente.
-
-## Qué debe hacer un buen commit
-
-### 1. La primera línea debe ser concreta
-
-La primera línea debe resumir el cambio de forma breve, precisa y legible.
-
-Formato recomendado:
-
-```text
-<tipo>(<ámbito>): <resumen concreto>
+[footer(s) opcionales]
 ```
 
-Ejemplos buenos:
+### Tipos permitidos
 
-- feat(ui): añadir filtro por estado en la lista de tareas
-- fix(api): validar fecha de vencimiento antes de guardar una tarea
-- docs: cambiar idioma de código de inglés a castellano
-- refactor(api): separar lógica de validación de la capa de controladores
-- chore: actualizar configuración de SQLite para el entorno local
+| Tipo | Cuándo usarlo |
+|------|--------------|
+| `feat` | Nueva funcionalidad |
+| `fix` | Corrección de bug |
+| `docs` | Solo documentación |
+| `refactor` | Reestructuración sin cambio de comportamiento |
+| `test` | Añadir o corregir tests |
+| `chore` | Tareas de mantenimiento (deps, config, build) |
+| `style` | Formato, sangría, sin cambio lógico |
+| `perf` | Mejora de rendimiento |
+| `ci` | Cambios en pipelines / GitHub Actions |
+| `revert` | Revierte un commit anterior |
 
-Ejemplos pobres:
+### Ámbito (scope) — opcional
 
-- actualizar fichero
-- arreglar bug
-- cambiar cosas en frontend
-- mejorar proyecto
+Añade contexto sobre qué parte del código afecta. Va entre paréntesis:
 
-### 2. El cuerpo es opcional, pero si hace falta debe aportar detalle
-
-Si el cambio tiene alguna complejidad o contexto útil, incluye un cuerpo con:
-
-- qué se modificó exactamente
-- por qué fue necesario
-- qué impacto tiene
-- cualquier detalle importante para futuras revisiones
-
-Formato sugerido:
-
-```text
-<tipo>(<ámbito>): <resumen concreto>
-
-- Se actualiza X para Y.
-- Se elimina o reemplaza Z porque ...
-- Se añade validación / soporte / ajuste en ...
+```
+feat(TareasController): añadir endpoint DELETE /api/tareas/{id}
+fix(TodoService): lanzar 404 cuando el item no existe
+test(TodoServiceTests): cubrir caso de título vacío
 ```
 
-Si el cambio es trivial, basta con una sola línea.
+### BREAKING CHANGE
 
-### 3. Sé escueto, no vago
+Si el cambio rompe compatibilidad, añade `!` antes de los dos puntos o un footer `BREAKING CHANGE:`:
 
-Un buen mensaje puede ser corto y específico al mismo tiempo.
+```
+feat(api)!: cambiar respuesta de creación de 200 a 201
 
-Ejemplos de mensajes buenos y concisos:
-
-- docs: cambiar idioma de código de inglés a castellano
-- fix(api): corregir validación de tareas sin título
-- feat(ui): mostrar contador de tareas pendientes
-
-No es necesario llenar el commit con detalles irrelevantes.
-
-## Reglas de estilo
-
-1. Usa voz en infinitivo o imperativo breve, como en un resumen técnico.
-2. Describe cambios reales, no intención general.
-3. Menciona el archivo o capa si aporta claridad: `api`, `ui`, `docs`, `db`, `config`.
-4. Si el cambio corrige un bug, indica qué se estaba haciendo mal.
-5. Si el cambio añade funcionalidad, indica qué se añadió exactamente.
-6. Si el cambio es de documentación, usa `docs:` y nombra el tema concreto.
-7. Si el cambio es de infraestructura o tareas de mantenimiento, usa `chore:`.
-
-## Plantilla recomendada
-
-```text
-<tipo>(<ámbito>): <resumen concreto>
-
-- <detalle del cambio 1>
-- <detalle del cambio 2>
-- <detalle del cambio 3>
+BREAKING CHANGE: los clientes que esperan 200 en POST /api/tareas deben actualizarse.
 ```
 
-## Ejemplos de commit útiles
+## Reglas
 
-```text
-feat(ui): añadir filtro por estado en la lista de tareas
+### 1. Sé específico — di qué cambió exactamente
 
-- añade selector para filtrar tareas por pendientes, completadas y todas
-- mantiene el estado actual al cambiar entre vistas
-- actualiza el contador visible del número de tareas mostradas
+❌ `docs: actualizar instrucciones`
+✓ `docs: cambiar idioma de ejemplos de código de inglés a castellano`
+
+❌ `fix: corregir error en servicio`
+✓ `fix: devolver 404 en TodoService.ObtenerPorId cuando el item no existe`
+
+❌ `chore: actualizar configuración`
+✓ `chore: añadir SQLite como proveedor de EF Core en Program.cs`
+
+### 2. Subject: apunta a ~50 chars, límite duro 72
+
+- Objetivo ~50 caracteres: obliga a pensar en lo esencial.
+- Límite absoluto: 72 — GitHub trunca con `…` a partir de ahí.
+- Imperativo, sin punto final: *"añadir"*, *"corregir"*, *"extraer"* — no *"añadido"* ni *"se añade"*.
+- Prueba de imperativo: *"Si se aplica, este commit [subject]"* debe tener sentido.
+
+### 3. El cuerpo explica el PORQUÉ, no el CÓMO
+
+El diff ya muestra cómo cambió el código. El cuerpo debe responder:
+- ¿Por qué fue necesario este cambio?
+- ¿Qué problema resolvía el estado anterior?
+- ¿Qué consecuencias o efectos secundarios tiene?
+
+Envuelve el texto del cuerpo a **72 caracteres** por línea.
+
+### 4. Escueto ≠ vago
+
+Corto está bien. Corto + impreciso no sirve. El lector debe entender qué ocurrió sin abrir el diff.
+
+### 5. Footers — referencias e integraciones
+
+Añade footers al final (separados del cuerpo por línea en blanco) para:
+
+```
+Closes: #42
+Refs: #38, #41
+Reviewed-by: Pedro
 ```
 
-```text
-docs: cambiar idioma de código de inglés a castellano
+`Closes:` cierra automáticamente el issue en GitHub al hacer merge.
+
+## Procedimiento
+
+1. Analiza el diff o los archivos modificados.
+2. Identifica el tipo de cambio predominante y el ámbito afectado.
+3. Escribe el subject: `tipo(ámbito): qué cambió` — apunta a ≤50 chars.
+4. Decide si el cuerpo aporta valor. Si sí, explica el porqué (no el cómo), envuelto a 72 chars.
+5. Añade footers si hay issues relacionados o es un breaking change.
+6. Muestra el mensaje final listo para copiar.
+
+## Ejemplos
+
+```
+feat(TareasController): añadir endpoint DELETE /api/tareas/{id}
 ```
 
-```text
-fix(api): validar título vacío antes de guardar una tarea
-
-- rechaza tareas sin título en la API
-- devuelve un error claro al cliente
-- evita guardar registros incompletos en SQLite
 ```
+fix(TodoService): lanzar KeyNotFoundException cuando Id no existe
 
-## Regla final
-
-Cuando redactes mensajes de commit, piensa:
-
-"¿Si alguien lo lee en el historial, entiende exactamente qué cambió y sin necesidad de abrir el diff?"
-
-Si la respuesta es no, vuelve a formularlo.
+Antes devolvía null silenciosamente. Los controladores esperan
+la excepción para responder con 404 correctamente.
+```
